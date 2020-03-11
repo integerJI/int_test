@@ -56,7 +56,7 @@ ROOT_URLCONF = 'intworldproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['intworldproject/TEMPLATES'],
+        'DIRS': ['intworldproject/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
