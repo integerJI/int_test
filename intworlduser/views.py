@@ -16,5 +16,16 @@ def signup(request):
 def signin(request):
     return render(request, 'signin.html')
     
+def signin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(request, username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            return redirect('home')
+    else:
+        return render(request, 'signin.html')
+
 def signout(request):
     return render(request, 'signout.html')
