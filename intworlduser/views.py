@@ -7,10 +7,17 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 # Create your views here.
 
-class SignUp(generic.CreateView):
-    form_class = UserCreationForm
+class UserSignupView(generic.CreateView):
+    form_class = UserCreationMultiForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
+
+    def form_valid(self, form):
+        user = form['user'].save()
+        profile = form['profile'].save(commit=False)
+        profile.user = user
+        profile.save()
+        return redirect(self.success_url)
 
 def signin(request):
     if request.method == 'POST':
