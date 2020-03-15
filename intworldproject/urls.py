@@ -7,6 +7,7 @@ import intworlduser.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', intworlduser.views.signin, name="signin"),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('intworldapp/', include('intworldapp.urls')),
     path('intworlduser/', include('intworlduser.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

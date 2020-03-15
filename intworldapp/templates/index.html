@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>메인 페이지</h1>
-    <a href="{% url 'signout'%}">Sign Out</a>
+    {% block content %}
+    {% if user.is_authenticated %}
+    Hi {{ user.username }} !
+    {% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">login</a>
+    {% endif %}
+    {% endblock %}
 </body>
 </html>
