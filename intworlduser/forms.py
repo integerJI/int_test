@@ -1,5 +1,5 @@
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
 from django.db import models
 from .models import Profile
 from django.contrib.auth.models import User
@@ -12,6 +12,6 @@ class ProfileForm(forms.ModelForm):
 
 class UserCreationMultiForm(MultiModelForm):
     form_class = {
-        'user' : UserCreationForm,
+        'user' : CreateUserForm,
         'birth_date' : ProfileForm,
     }
