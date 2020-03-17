@@ -12,6 +12,6 @@ class ProfileForm(forms.ModelForm):
 
 class UserCreationMultiForm(MultiModelForm):
     form_class = {
-        'user' : CreateUserForm,
-        'birth_date' : ProfileForm,
+        'user' : UserCreationForm,
+        'profile' : ProfileForm,
     }

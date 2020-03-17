@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
-from .forms import UserCreationMultiForm, ProfileForm
+from .forms import UserCreationMultiForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
@@ -11,6 +11,11 @@ class UserSignupView(generic.CreateView):
     form_class = UserCreationMultiForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
+
+    print(form_class.as_p)
+    print(form_class)
+    print(UserCreationMultiForm)
+    print(UserCreationForm)
 
     def form_valid(self, form):
         user = form['user'].save()
