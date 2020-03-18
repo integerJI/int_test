@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from betterforms.multiform import MultiModelForm
+from django import forms
 
 class Profile(models.Model):
     class Meta:
@@ -8,4 +10,8 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nick = models.CharField(verbose_name='NickName', max_length=50, blank=True,)
-    birth_date = models.DateTimeField(null=True, blank=True)
+    intro = models.TextField(blank=True, max_length=200, )
+    profile_image = models.ImageField(blank=True, upload_to='usr')
+
+    def __str__(self):
+        return self.nick

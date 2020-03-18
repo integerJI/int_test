@@ -7,22 +7,26 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 # Create your views here.
 
-class UserSignupView(generic.CreateView):
-    form_class = UserCreationMultiForm
-    success_url = reverse_lazy('login')
-    template_name = 'signup.html'
-
-    print(form_class.as_p)
-    print(form_class)
-    print(UserCreationMultiForm)
-    print(UserCreationForm)
-
-    def form_valid(self, form):
-        user = form['user'].save()
-        profile = form['profile'].save(commit=False)
-        profile.user = user
-        profile.save()
-        return redirect(self.success_url)
+def signup(request):
+    if request.method == 'POST':
+        if request.POST['user-password1'] == request.POST['user-password2']:
+            form = UserCreationMultiForm(request.POST, request.FILES)
+            if form.is_valid(): 
+                user = form['user'].save()
+                profile = form['profile'].save(commit=False)
+                profile.user = user
+                profile.nick = user
+                profile.save()
+                return redirect('login')
+            else:
+                user = request.POST['user-username']
+                user = User.objects.get(username=user)
+                # messages.info(request, '아이디가 중복됩니다.')
+                return render(request, 'signup.html')
+        else:
+            # messages.info(request, '비밀번호가 다릅니다.')
+            return render(request, 'signup.html')
+    return render(request, 'signup.html')
 
 def signin(request):
     if request.method == 'POST':

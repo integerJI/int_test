@@ -1,11 +1,27 @@
 {% block content %}
-<h2>sign up</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ MultiForm.as_p }}
-    {{ MultiModelForm.as_p }}
-    {{ Form.as_p }}
-    {{ form.as_p }}
-    <button type="submit">sign up</button>
+<h2>signup</h2>
+<form method="POST" enctype="multipart/form-data">
+{%csrf_token%}  
+<br>
+<br>
+아이디 : <input type="text" name="user-username">
+<br>
+<br>
+비밀번호 : <input type="password" name="user-password1">
+<br>
+<br>
+비밀번호 확인 : <input type="password" name="user-password2">
+<br>
+<br>
+프로필 사진 : <input type="file"name="profile-profile_image" accept="image/*" >
+<br>
+<br>
+자기소개 : <textarea row="3" name="profile-intro"></textarea>
+<br>
+<br>
+<button type="submit" class="save btn btn-success">회원가입</button>
+<a href="{% url 'index' %}">
+<button type="button" class="btn btn-danger">취소</button>
+</a>
 </form>
 {% endblock %}
