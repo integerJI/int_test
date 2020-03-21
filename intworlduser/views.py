@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from .forms import UserCreationMultiForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import auth
 # Create your views here.
@@ -18,14 +18,6 @@ def signup(request):
                 profile.nick = user
                 profile.save()
                 return redirect('login')
-            else:
-                user = request.POST['user-username']
-                user = User.objects.get(username=user)
-                # messages.info(request, '아이디가 중복됩니다.')
-                return render(request, 'signup.html')
-        else:
-            # messages.info(request, '비밀번호가 다릅니다.')
-            return render(request, 'signup.html')
     return render(request, 'signup.html')
 
 def signin(request):

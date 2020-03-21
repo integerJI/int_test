@@ -1,6 +1,6 @@
 {% block content %}
 <h2>signup</h2>
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" action="{% url 'signup' %}" enctype="multipart/form-data">
 {%csrf_token%}  
 <br>
 <br>
@@ -20,7 +20,7 @@
 <br>
 <br>
 <button type="submit" class="save btn btn-success">회원가입</button>
-<a href="{% url 'index' %}">
+<a href="{% url 'login' %}">
 <button type="button" class="btn btn-danger">취소</button>
 </a>
 </form>
