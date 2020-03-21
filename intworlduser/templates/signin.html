@@ -6,13 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>로그인 페이지</h1>
+    <h1>Sign In</h1>
     <form method="POST" action="{% url 'signin'%}">
         {%csrf_token%}
         <input type="text" name="username">
+        <br>
         <input type="password" name="password">
+        <br>
         <button type="submit">Sign In</button>
     </form>
-    <a href="{% url 'signup'%}">Sign Up</a>
+    <a href="{% url 'signup' %}">
+        <button type="submit">Sign Up</button>
+    </a>
 </body>
 </html>

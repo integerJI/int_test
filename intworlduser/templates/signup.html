@@ -1,27 +1,19 @@
-{% block content %}
-<h2>signup</h2>
-<form method="POST" action="{% url 'signup' %}" enctype="multipart/form-data">
-{%csrf_token%}  
-<br>
-<br>
-아이디 : <input type="text" name="user-username">
-<br>
-<br>
-비밀번호 : <input type="password" name="user-password1">
-<br>
-<br>
-비밀번호 확인 : <input type="password" name="user-password2">
-<br>
-<br>
-프로필 사진 : <input type="file"name="profile-profile_image" accept="image/*" >
-<br>
-<br>
-자기소개 : <textarea row="3" name="profile-intro"></textarea>
-<br>
-<br>
-<button type="submit" class="save btn btn-success">회원가입</button>
-<a href="{% url 'login' %}">
-<button type="button" class="btn btn-danger">취소</button>
-</a>
-</form>
-{% endblock %}
+<!--myMember/templates/signup.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <form method="POST" action="{% url 'signup'%}">
+        {%csrf_token%}
+        <input type="text" name="username">
+        <input type="password" name="password1">
+        <input type="password" name="password2">
+        <button type="submit">Sign In</button>
+    </form>
+    <a href="{% url 'signup'%}">Sign Up</a>
+</body>
+</html>
