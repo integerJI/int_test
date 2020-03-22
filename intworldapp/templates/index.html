@@ -1,18 +1,24 @@
 <!--myApp/templates/index.html-->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+{% extends 'base.html' %}
+
+<!-- django에서 지원하는 여러가지 시간 표현 형식 모음 -->
+{% load humanize %}
+
+{% block content %}
 <body>
-    <h1>Main Page</h1>
-    {% if user.is_authenticated %}
-    Hi {{ user.username }} !
-    <a href="{% url 'signout'%}">Sign Out</a>
-    {% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">login</a>
-    {% endif %}
+    {% for post in posts.all %}
+    <div class="card">
+        <div class="card-header">{{ post.create_user }}</div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>{{ post.main_text }}</p>
+            <footer class="blockquote-footer">{{ post.create_date | naturaltime }}</footer>
+          </blockquote>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">댓글 (미구현)</small>
+        </div>
+      </div>      
+      {% endfor %}
 </body>
-</html>
+{% endblock %}
