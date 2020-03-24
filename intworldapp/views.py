@@ -19,7 +19,7 @@ def post(request):
 
 def update(request, post_id):
     if request.method == 'POST':
-        post = Post().objects.get(id = post_id)
+        post = Post.objects.get(id = post_id)
         post.main_text = request.POST['main_text']
         post.create_user = User.objects.get(username = request.user.get_username())
         post.update_date = timezone.datetime.now()
@@ -28,6 +28,6 @@ def update(request, post_id):
     return render(request, 'update.html')
 
 def delete(request, post_id):
-    post = Post().objects.get(id = post_id)
+    post = get_object_or_404(Post, id=post_id)
     post.delete()
     return redirect(reverse('index'))
