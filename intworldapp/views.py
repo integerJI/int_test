@@ -17,6 +17,10 @@ def post(request):
         return redirect(reverse('index'))
     return render(request, 'post.html')
 
+def detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    return render(request, 'detail.html', {'post': post})
+
 def update(request, post_id):
     post = Post.objects.get(id = post_id)
     if request.method == 'POST':
