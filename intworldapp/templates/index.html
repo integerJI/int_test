@@ -6,6 +6,7 @@
 
 {% block content %}
 <body>
+  
     {% for post in posts.all %}
     <div class="card">
         <div class="card-header">{{ post.create_user }}<a href="{% url 'update' post.id %}">수정</a><a href="{% url 'delete' post.id %}">삭제</a></div>
@@ -19,6 +20,7 @@
           <form action="{% url 'c_post' post.id %}" method="POST">
               {% csrf_token %}
               <input type="text" name="comment_text" id="comment_text" placeholder="댓글달아주세요">
+              <input type="hidden" name="app_url" id="app_url" value="{{app_url}}"/>
               <button type="submit">댓글달기</button>
           </form>
 
