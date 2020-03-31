@@ -48,3 +48,15 @@ def c_post(request, post_id):
             return redirect(reverse('index'), post_id)
         else :
             return redirect('detail', post_id)
+
+@login_required
+def c_delete(request, post_id, comment_id):
+    post = get_object_or_404(Post, id=post_id)
+    comment = get_object_or_404(Comment, id=comment_id)
+        
+    comment.delete()
+    
+    if request.GET.get('app_url') == '/intworldapp/index/':
+        return redirect(reverse('index'), post_id)
+    else :
+        return redirect('detail', post_id)

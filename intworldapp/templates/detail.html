@@ -26,6 +26,8 @@
           <small class="text-muted">{{comment.comment_date}}</small>
           <br>
           <a class="card-text">{{comment.comment_text}}
+          <a href="{% url 'c_delete' post.pk comment.pk %}">삭제</a>
+
           {% endfor %}
         </div>
       </div>
