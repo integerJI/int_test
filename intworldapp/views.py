@@ -8,6 +8,9 @@ def index(request):
     app_url = request.path
     return render(request, 'index.html', {'posts':posts, 'app_url':app_url})
 
+def dev(request):
+    return render(request, 'devpage.html')
+
 def post(request):
     if request.method == 'POST':
         post = Post()
@@ -51,10 +54,10 @@ def c_post(request, post_id):
 
 @login_required
 def c_delete(request, post_id, comment_id):
+    post = get_object_or_404(Post, id=post_id)
+    comment = get_object_or_404(Comment, id=comment_id)
+
     if request.method =='POST':
-    
-        post = get_object_or_404(Post, id=post_id)
-        comment = get_object_or_404(Comment, id=comment_id)
             
         comment.delete()
         
