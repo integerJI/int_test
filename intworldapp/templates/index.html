@@ -29,8 +29,13 @@
           <small class="text-muted">{{comment.comment_date}}</small>
           <br>
           <a class="card-text">{{comment.comment_text}}
-          <input type="hidden" name="app_url" id="app_url" value="{{app_url}}"/>
-          <a href="{% url 'c_delete' post.pk comment.pk %}">삭제</a>
+
+          <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="app_url" id="app_url" value="{{app_url}}"/>
+              <button type="submit">삭제</button>
+          </form>
+
           {% endfor %}
         </div>
       </div>
