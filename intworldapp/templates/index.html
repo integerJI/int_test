@@ -6,19 +6,60 @@
 
 {% block content %}
 <body>
-  {% for post in posts.all %}
 
-  <p class="blog-post-meta">{{ post.create_date}} by <a href="#">{{ post.create_user }}</a></p>
-  <p>{{ post.main_text }}</p>
-  <hr>
-  <ul>
-    {% for comment in post.comments.all %}
-    <li>{{comment.comment_text}}</li>
-    {% endfor %}
-  </ul>
-  <hr>
-  
+<div class="container">
+  {% for post in posts.all %}
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header d-flex justify-content-between">
+
+        <h4 class="my-0 font-weight-normal">{{ post.create_user }}</h4>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+            <svg class="bi bi-three-dots-vertical" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M9.5 13a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm0-5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm0-5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" clip-rule="evenodd"/>
+            </svg>            
+
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="#">My Profile</a>
+            <a class="dropdown-item" href="{% url 'post' %}">New Post</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'signout'%}">Sign Out</a>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+        <a class="card-title pricing-card-title">{{ post.main_text }}<small class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
+        <hr>
+        {% for comment in post.comments.all %}
+        <span class="comment_user">{{comment.comment_user}}</span>
+        <small class="text-muted">{{comment.comment_date}}</small>
+        <br>
+        <a class="card-text">{{comment.comment_text}}
+        <br>
+        {% endfor %}
+        
+        <form action="{% url 'c_post' post.id %}" method="POST">
+          {% csrf_token %}
+          <div class="input-group input-group-sm mb-3">
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="comment_text" id="comment_text" placeholder="댓글 달기 ...">
+            <input type="hidden" name="app_url" id="app_url" value="{{app_url}}"/>
+            <div class="input-group-prepend">
+              <button class="input-group-text" id="inputGroup-sizing-sm" type="submit">게시</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
   {% endfor %}
+</div>
+
 <!--
     {% for post in posts.all %}
     <div class="card">
