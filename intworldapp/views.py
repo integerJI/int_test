@@ -34,11 +34,9 @@ def update(request, post_id):
     return render(request, 'update.html')
 
 def delete(request, post_id):
-    post = Post.objects.get(id = post_id)
-    if request.method == 'POST':
-        post = get_object_or_404(Post, id=post_id)
-        post.delete()
-        return redirect(reverse('index'))
+    post = get_object_or_404(Post, id=post_id)
+    post.delete()
+    return redirect(reverse('index'))
 
 
 @login_required
@@ -57,13 +55,6 @@ def c_post(request, post_id):
 @login_required
 def c_delete(request, post_id, comment_id):
     post = get_object_or_404(Post, id=post_id)
-    comment = get_object_or_404(Comment, id=comment_id)
-
-    if request.method =='POST':
-            
-        comment.delete()
-        
-        if request.POST.get('app_url') == '/intworldapp/index/':
-            return redirect(reverse('index'), post_id)
-        else :
-            return redirect('detail', post_id)
+    comment = get_object_or_404(Comment, id=comment_id)            
+    comment.delete()
+    return redirect(reverse('index'), post_id)

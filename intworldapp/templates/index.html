@@ -14,15 +14,13 @@
       <div class="card-header d-flex justify-content-between">
 
         <h4 class="my-0 font-weight-normal">{{ post.create_user }}</h4>
-
+        <a href="{% url 'update' post.id %}">수정</a>
+        <a href="{% url 'delete' post.id %}">삭제</a>
+        
       </div>
       <div class="card-body">
         <a class="card-title pricing-card-title">{{ post.main_text }}<small class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
         
-        <a href="{% url 'update' post.id %}"><img src="/static/update.png" alt="수정" width="25"></a>
-
-        <a class="delete"><img src="/static/delete.png" alt="수정" width="25"></a>
-
         <hr>
         {% for comment in post.comments.all %}
         <span class="comment_user">{{comment.comment_user}}</span>
@@ -31,7 +29,7 @@
         <a class="card-text">{{comment.comment_text}}
         <br>
         {% endfor %}
-        
+        <br>
         <form action="{% url 'c_post' post.id %}" method="POST">
           {% csrf_token %}
           <div class="input-group input-group-sm mb-3">
@@ -98,31 +96,4 @@
       {% endfor %}
 -->
 </body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script type="text/javascript">
-
-$('.delete').click(function () {
-
-  var pk = $(this).attr('post.id') 
-
-  $.ajax({
-    type: "POST",
-    url: "{% url 'delete' %}", 
-    data: { 'pk': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}' }, 
-    dataType: "json", 
-
-    success: function (response) { 
-      alert(response.message);
-    },
-    error: function (request, status, error) {
-      alert('로그인이 필요합니다.')
-    }
-  });
-})
-
-</script>
-</script>
-
-
 {% endblock %}
