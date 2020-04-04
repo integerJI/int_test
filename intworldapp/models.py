@@ -7,6 +7,7 @@ class Post(models.Model):
     create_user = models.ForeignKey(User, on_delete = models.CASCADE)
     create_date = models.DateTimeField('date published', default=timezone.now)
     update_date = models.DateTimeField('date published', null = True, default=timezone.now)
+    create_img = models.ImageField(blank=True, upload_to="post/%Y/%m/%d", null=True)
 
     def __str__(self):
         return self.main_text
