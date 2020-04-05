@@ -2,9 +2,12 @@
 {% extends 'base.html' %}
 {% block content %}
 <body>
-    <form method="POST" action="{% url 'post' %}">
+    <form method="POST" action="{% url 'post' %}" enctype="multipart/form-data">
         {%csrf_token%}
         <textarea cols=40 rows=10 name="main_text"></textarea>
+        <br>
+        <br>
+        <input type="file" name="create_img" accept="image/*" >
         <br>
         <br>
         <input class="btn btn-dark" type="submit" value="post">

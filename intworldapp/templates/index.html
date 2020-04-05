@@ -18,6 +18,16 @@
         <a href="{% url 'delete' post.id %}">삭제</a>
         
       </div>
+
+      {% if post.create_img %}
+      <div class="text-center">
+        <img src="{{post.create_img.url}}" class="rounded" alt="..." width="200dp" height="200dp">
+      </div>
+      
+
+      {% else %}
+      <a>no</a>
+      {% endif %}
       <div class="card-body">
         <a class="card-title pricing-card-title">{{ post.main_text }}<small class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
         

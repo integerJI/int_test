@@ -15,6 +15,7 @@ def post(request):
     if request.method == 'POST':
         post = Post()
         post.main_text = request.POST['main_text']
+        post.create_img = request.FILES['create_img']
         post.create_user = User.objects.get(username = request.user.get_username())
         post.save()
         return redirect(reverse('index'))
