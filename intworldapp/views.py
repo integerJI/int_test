@@ -3,6 +3,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Post, Comment
 
+try:
+    from django.utils import simplejson as json
+except ImportError:
+    import json
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+
+
 def index(request):
     posts = Post.objects.order_by('-id')
     app_url = request.path
@@ -59,3 +68,21 @@ def c_delete(request, post_id, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)            
     comment.delete()
     return redirect(reverse('index'), post_id)
+
+@login_required
+@require_POST
+def like(request):
+    if request.method == 'POST':
+        user = request.user 
+        create_user = request.POST.get('pk', None)
+        post = get_object_or_404(Post, id=create_user)
+
+        if post.likes.filter(id = user.id).exists():
+            post.likes.remove(user) 
+            message = '좋아요 취소'
+        else:
+            post.likes.add(user)
+            message = '좋아요!'
+
+    context = {'likes_count' : post.total_likes, 'message' : message}
+    return HttpResponse(json.dumps(context), content_type='application/json')
