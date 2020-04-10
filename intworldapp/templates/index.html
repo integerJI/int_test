@@ -34,12 +34,12 @@
       <a>no</a>
       {% endif %}
       <div class="card-body">
+        
         {% if post.likes.all %}
         <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_after.png" alt="클릭시 좋아요 취소" style="width: 2rem; height:2rem;"></a>
         {% else %}
         <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_before.png" alt="클릭시 좋아요" style="width: 2rem; height:2rem;"></a>
         {% endif %}
-        <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }} like</span></small>
 
 
         
@@ -48,8 +48,8 @@
         </svg>
         
         <br>
-        
-        <small class="card-title pricing-card-title">좋아요 n개</small>
+        <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }} like</span></small>
+
       </div>
 
       <div class="card-body">
