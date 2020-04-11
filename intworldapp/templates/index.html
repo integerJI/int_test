@@ -15,7 +15,7 @@
       <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
 
-        <h4 class="my-0 font-weight-normal">{{ post.create_user }}</h4>
+        <h4 class="my-0 font-weight-normal"><a class="card-text" href="{% url 'userpage' post.id  %}">{{ post.create_user }}</a></h4>
         <div class="btn-group">
 
         <a href="{% url 'update' post.id %}">수정</a>
