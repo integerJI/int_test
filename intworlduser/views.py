@@ -58,7 +58,7 @@ def userinfo(request):
 
 @login_required
 def user_select_info(request, writer):
-    select_profile = Profile.objects.get(id=writer)
+    select_profile = Profile.objects.get(nick=writer)
     select_user = select_profile.user
 
     if not select_profile.profile_image:
@@ -74,3 +74,4 @@ def user_select_info(request, writer):
     }
 
     return render(request, 'userpage.html', context=context)
+
