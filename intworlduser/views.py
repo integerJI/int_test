@@ -1,10 +1,17 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib import auth
+from django.contrib import messages
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
+from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
+from django.urls import reverse_lazy
+from django.views import generic, View
+from django.contrib.auth.decorators import login_required
 from .forms import UserCreationMultiForm, ProfileForm, ProfileUpdateForm
 from .models import Profile
-from django.contrib.auth.decorators import login_required
 
 def signup(request):
     if request.method == 'POST':
@@ -75,3 +82,52 @@ def user_select_info(request, writer):
 
     return render(request, 'userpage.html', context=context)
 
+
+class ProfileUpdateView(View): 
+    def get(self, request):
+        user = get_object_or_404(User, pk=request.user.pk) 
+
+
+        if hasattr(user, 'profile'):  
+            profile = user.profile
+            profile_form = ProfileUpdateForm(initial={
+                'nick': profile.nick,
+                'intro': profile.intro,
+                'profile_image': profile.profile_image,
+            })
+        else:
+            profile_form = ProfileUpdateForm()
+
+        return render(request, 'profile_update.html', { "profile_form": profile_form})
+
+    def post(self, request):
+        u = User.objects.get(id=request.user.pk)       
+
+
+        if hasattr(u, 'profile'):
+            profile = u.profile
+            profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile) 
+        else:
+            profile_form = ProfileUpdateForm(request.POST, request.FILES)
+
+        # Profile 폼
+        if profile_form.is_valid():
+            profile = profile_form.save(commit=False) 
+            profile.user = u
+            profile.save()
+
+            if not profile.profile_image:
+                pic_url = ""
+            else:
+                pic_url = profile.profile_image.url
+                    
+            context = {
+                'id' : u.username,
+                'nick' : profile.nick,
+                'profile_pic' : pic_url,
+                'intro' : profile.intro,
+            }
+
+            return render(request, 'mypage.html', context=context)
+            
+        return redirect('mypage', pk=request.user.pk) 
