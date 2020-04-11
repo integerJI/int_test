@@ -2,12 +2,28 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.conf import settings
+from .forms import UserCreationMultiForm, ProfileForm, ProfileUpdateForm
+from .models import Profile
 
 def signup(request):
     if request.method == 'POST':
-        if request.POST['password1'] == request.POST['password2']:
-            user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
-            return redirect('signin')
+        if request.POST['user-password1'] == request.POST['user-password2']:
+            form = UserCreationMultiForm(request.POST, request.FILES)
+            if form.is_valid(): 
+                user = form['user'].save()
+                profile = form['profile'].save(commit=False)
+                profile.user = user
+                profile.nick = user
+                profile.save()
+                return redirect('signin')
+            else:
+                user = request.POST['user-username']
+                user = User.objects.get(username=user)
+                messages.info(request, '아이디가 중복됩니다.')
+                return render(request, 'signup.html')
+        else:
+            messages.info(request, '비밀번호가 다릅니다.')
+            return render(request, 'signup.html')
     return render(request, 'signup.html')
 
 class Loginviews(LoginView):
