@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Post, Comment
+from intworlduser.models import Profile
 
 try:
     from django.utils import simplejson as json
@@ -14,7 +15,24 @@ from django.views.decorators.http import require_POST
 def index(request):
     posts = Post.objects.order_by('-id')
     app_url = request.path
-    return render(request, 'index.html', {'posts':posts, 'app_url':app_url})
+
+    conn_user = request.user
+    conn_profile = Profile.objects.get(user=conn_user)
+
+    if not conn_profile.profile_image:
+        pic_url = ""
+    else:
+        pic_url = conn_profile.profile_image.url
+            
+    context = {
+        'id' : conn_user.username,
+        'nick' : conn_profile.nick,
+        'profile_pic' : pic_url,
+        'intro' : conn_profile.intro,
+        'posts' : posts,
+        'app_url' : app_url,
+    }
+    return render(request, 'index.html', context=context)
 
 def dev(request):
     return render(request, 'devpage.html')
