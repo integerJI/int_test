@@ -36,6 +36,11 @@ def signup(request):
 
 class Loginviews(LoginView):
     template_name = 'signin.html'
+
+    def form_invalid(self, form):
+        messages.error(self.request, '로그인에 실패하였습니다. Id 혹은 Password를 확인해 주세요.', extra_tags='danger')
+        return super().form_invalid(form)
+
 signin = Loginviews.as_view()
 
 
