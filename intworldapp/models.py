@@ -22,7 +22,6 @@ class Comment(models.Model):
     comment_text = models.CharField(max_length=200)
     comment_user = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
     comment_date = models.DateTimeField('date published', default=timezone.now)
-    comment_update_date = models.DateTimeField('date published', null = True, default=timezone.now)
     
     class Meta:
         ordering = ['-id']
