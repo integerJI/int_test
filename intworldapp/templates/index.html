@@ -52,9 +52,11 @@
         </svg>
         <br>
         <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }} like</span></small>
+        <small class="text-muted">/</small>
+        <small class="text-muted">{{post.comments.count}} comment</small>
+        
         <hr>
         <a class="card-title pricing-card-title">{{ post.main_text }}<small class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
-        
         <hr>
         {% for comment in post.comments.all %}
         <span class="comment_user">{{comment.comment_user}}</span>
@@ -67,7 +69,7 @@
               
               <button type="submit">삭제</button>
           </form>
-
+          <br>
         {% endfor %}
         <form action="{% url 'c_post' post.id %}" method="POST">
           {% csrf_token %}
