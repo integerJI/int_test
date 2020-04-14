@@ -60,7 +60,7 @@
         <hr>
         
         {% for comment in post.comments.all %}
-        <span class="comment_user">{{comment.comment_user}}</span>
+        <a class="my-0 font-weight-normal" href="{% url 'userpage' comment.comment_user %}">{{ comment.comment_user }}</a>
 
         <small class="text-muted">{{comment.comment_date}}</small>
         <a class="card-text">{{comment.comment_text}}

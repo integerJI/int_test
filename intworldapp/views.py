@@ -65,25 +65,18 @@ def delete(request, post_id):
     post.delete()
     return redirect(reverse('index'))
 
-
 @login_required
 def c_post(request, post_id):
     if request.method =='POST':
-        post = get_object_or_404(Post, id=post_id)
-
-        context = {'post': post,}
-        content = request.POST.get('comment_text')
-
-        conn_profile = User.objects.get(username = request.user.get_username())
-
-        Comment.objects.create(post=post, comment_user=conn_profile, comment_text=content)
+        comment = get_object_or_404(Post, id=post_id)
+        comment_text = request.POST.get('comment_text')
+        comment_user = User.objects.get(username = request.user.get_username())
+        Comment.objects.create(comment=comment, comment_text=comment_text, comment_user=comment_user)
 
         if request.POST.get('app_url') == '/intworldapp/index/':
             return redirect(reverse('index'), post_id)
         else :
             return redirect('detail', post_id)
-
-
 '''
     if request.method =='POST':
         post = get_object_or_404(Post, id=post_id)
