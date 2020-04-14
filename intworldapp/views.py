@@ -69,15 +69,41 @@ def delete(request, post_id):
 @login_required
 def c_post(request, post_id):
     if request.method =='POST':
-        comment = get_object_or_404(Post, id=post_id)
-        comment_text = request.POST.get('comment_text')
-        comment_user = User.objects.get(username = request.user.get_username())
-        Comment.objects.create(comment=comment, comment_text=comment_text, comment_user=comment_user)
+        post = get_object_or_404(Post, id=post_id)
+
+        context = {'post': post,}
+        content = request.POST.get('comment_text')
+
+        conn_profile = User.objects.get(username = request.user.get_username())
+
+        Comment.objects.create(post=post, comment_user=conn_profile, comment_text=content)
 
         if request.POST.get('app_url') == '/intworldapp/index/':
             return redirect(reverse('index'), post_id)
         else :
             return redirect('detail', post_id)
+
+
+'''
+    if request.method =='POST':
+        post = get_object_or_404(Post, id=post_id)
+
+        context = {'post': post,}
+        content = request.POST.get('content')
+
+        conn_profile = Profile.objects.get(username = request.user.get_username())
+
+        if not content:
+            messages.info(request, '댓글을 입력해 주세요')
+            return redirect('detail', memokey)
+
+        Comment.objects.create(post=post, comment_user=conn_profile, comment_contents=content)
+
+        if request.POST.get('app_url') == '/intworldapp/index/':
+            return redirect(reverse('index'), post_id)
+        else :
+            return redirect('detail', post_id)
+'''
 
 @login_required
 def c_delete(request, post_id, comment_id):

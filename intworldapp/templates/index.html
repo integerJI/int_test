@@ -58,8 +58,10 @@
         <hr>
         <a class="card-title pricing-card-title">{{ post.main_text }}<small class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
         <hr>
+        
         {% for comment in post.comments.all %}
         <span class="comment_user">{{comment.comment_user}}</span>
+
         <small class="text-muted">{{comment.comment_date}}</small>
         <a class="card-text">{{comment.comment_text}}
 
