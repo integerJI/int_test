@@ -4,10 +4,14 @@
 <body>
     <form method="POST" action="{% url 'post' %}" enctype="multipart/form-data">
         {%csrf_token%}
-        <textarea cols=40 rows=10 name="main_text"></textarea>
+        <div class="form-group">
+            <textarea class="form-control" rows="3" name="main_text" cols="40" rows="10" maxlength="150" required id="id_text" placeholder="#"></textarea>
+        </div>
         <br>
         <br>
-        <input type="file" name="create_img" accept="image/*" >
+        <div class="form-group">
+            <input type="file" class="form-control-file" id="id_images" name="create_img" accept="image/*" >
+        </div>
         <br>
         <br>
         <input class="btn btn-dark" type="submit" value="post">
