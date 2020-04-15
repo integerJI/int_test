@@ -14,7 +14,7 @@ from django.views.decorators.http import require_POST
 
 
 def index(request):
-    posts = Post.objects.all().prefetch_related('tag_set').order_by('-id')
+    posts = Post.objects.all().order_by('-id')
     app_url = request.path
 
     conn_user = request.user
@@ -108,10 +108,13 @@ def like(request):
     context = {'likes_count' : post.total_likes, 'message' : message}
     return HttpResponse(json.dumps(context), content_type='application/json')
 
-def search(request):
-    posts = Post.objects.all().order_by('-id')
+def search(request, tag=None):
 
     q = request.POST.get('q', "") 
+
+    if tag:
+        posts = Post.objects.filter(tag_set__tag_name__iexact=tag).prefetch_related('tag_set').select_related('name__profile')
+        return render(request, 'search.html', {'posts' : posts, 'q' : q, 'tag': tag})
 
     if q:
         posts = posts.filter(main_text__icontains=q)
