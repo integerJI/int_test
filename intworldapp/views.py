@@ -45,8 +45,8 @@ def post(request):
         if form.is_valid(): 
             post = form.save(commit = False)
             post.create_user = User.objects.get(username = request.user.get_username())
-            post.tag_save()
             post.save()
+            post.tag_save()
         return redirect(reverse('index'))
     else:
         form = PostForm() 

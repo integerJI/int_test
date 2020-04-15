@@ -27,7 +27,7 @@ class Post(models.Model):
             return
 
         for t in tags:
-            tag, tag_created = Tag.objects.get_or_create(tag_name=t)
+            tag, tag_created = Tag.objects.get_or_create(name=t)
             self.tag_set.add(tag)  # NOTE: ManyToManyField 에 인스턴스 추가
 
         
@@ -44,7 +44,7 @@ class Comment(models.Model):
         return '%s - %s' % (self.comment_user, self.comment_text) 
 
 class Tag(models.Model):
-    tag_name = models.CharField(max_length=140, unique=True)
+    name = models.CharField(max_length=140, unique=True)
 
     def __str__(self):
-        return self.tag_name
+        return self.name
