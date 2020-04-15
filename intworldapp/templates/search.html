@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if not posts %}
+
+        <h1>검색 결과가 없습니다</h1>
+
+    {% else %}
+
+        <h1>검색 결과가 있습니다.</h1>
+    {% endif %}
+
+{% endblock %}

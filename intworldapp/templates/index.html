@@ -60,9 +60,11 @@
         <hr>
         
         {% for comment in post.comments.all %}
-        <a class="my-0 font-weight-normal" href="{% url 'userpage' comment.comment_user %}">{{ comment.comment_user }}</a>
+        <a class="card-text" href="{% url 'userpage' comment.comment_user %}"><span class="comment_writer_name">{{comment.comment_user}}</span></a>
+
 
         <small class="text-muted">{{comment.comment_date}}</small>
+        <br>
         <a class="card-text">{{comment.comment_text}}
 
           <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">

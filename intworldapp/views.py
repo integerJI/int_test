@@ -77,26 +77,6 @@ def c_post(request, post_id):
             return redirect(reverse('index'), post_id)
         else :
             return redirect('detail', post_id)
-'''
-    if request.method =='POST':
-        post = get_object_or_404(Post, id=post_id)
-
-        context = {'post': post,}
-        content = request.POST.get('content')
-
-        conn_profile = Profile.objects.get(username = request.user.get_username())
-
-        if not content:
-            messages.info(request, '댓글을 입력해 주세요')
-            return redirect('detail', memokey)
-
-        Comment.objects.create(post=post, comment_user=conn_profile, comment_contents=content)
-
-        if request.POST.get('app_url') == '/intworldapp/index/':
-            return redirect(reverse('index'), post_id)
-        else :
-            return redirect('detail', post_id)
-'''
 
 @login_required
 def c_delete(request, post_id, comment_id):
@@ -122,3 +102,15 @@ def like(request):
 
     context = {'likes_count' : post.total_likes, 'message' : message}
     return HttpResponse(json.dumps(context), content_type='application/json')
+
+def search(request):
+    posts = Post.objects.all().order_by('-id')
+
+    q = request.POST.get('q', "") 
+
+    if q:
+        posts = posts.filter(main_text__icontains=q)
+        return render(request, 'search.html', {'posts' : posts, 'q' : q})
+    
+    else:
+        return render(request, 'search.html')
