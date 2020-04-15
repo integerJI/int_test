@@ -56,7 +56,7 @@
         <small class="text-muted">{{post.comments.count}} comment</small>
         
         <hr>
-        <a class="card-title pricing-card-title">{{ post.main_text }}<small class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
+        <a class="card-title pricing-card-title">{{ post|add_link|safe }}<small class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
         <hr>
         
         {% for comment in post.comments.all %}

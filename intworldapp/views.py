@@ -14,7 +14,7 @@ from django.views.decorators.http import require_POST
 
 
 def index(request):
-    posts = Post.objects.order_by('-id')
+    posts = Post.objects.all().prefetch_related('tag_set').order_by('-id')
     app_url = request.path
 
     conn_user = request.user
