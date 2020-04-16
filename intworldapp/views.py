@@ -109,11 +109,12 @@ def like(request):
     return HttpResponse(json.dumps(context), content_type='application/json')
 
 def search(request, tag=None):
+    posts = Post.objects.all().order_by('-id')
 
     q = request.POST.get('q', "") 
 
     if tag:
-        posts = Post.objects.filter(tag_set__tag_name__iexact=tag).prefetch_related('tag_set').select_related('name__profile')
+        posts = Post.objects.filter(tag_set__tag_name__iexact=tag).prefetch_related('tag_set').select_related('create_user')
         return render(request, 'search.html', {'posts' : posts, 'q' : q, 'tag': tag})
 
     if q:
