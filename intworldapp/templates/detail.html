@@ -1,52 +1,71 @@
 <!--myApp/templates/index.html-->
+
 {% extends 'base.html' %}
-
-<!-- django에서 지원하는 여러가지 시간 표현 형식 모음 -->
+{% load post_extras %}
 {% load humanize %}
-
 {% block content %}
 <body>
-    <div class="card">
-        <div class="card-header">{{ post.create_user }}
-
-          <form action="{% url 'update' post.id %}" method="POST">
-              {% csrf_token %}
-              <button type="submit">수정</button>
-          </form>
-
-          <form action="{% url 'delete' post.id %}" method="POST">
-              {% csrf_token %}
-              <button type="submit">삭제</button>
-          </form>
-
-        <div class="card-body">
-          <blockquote class="blockquote mb-0">
-            <p>{{ post.main_text }}</p>
-            <a href="{% url 'detail' post.id %}" >댓글 모두 보기 </a><a> {{ post.create_date | naturaltime }}</a>
-          </blockquote>
-        </div>
-        <div class="card-footer">
-          <form action="{% url 'c_post' post.id %}" method="POST">
-              {% csrf_token %}
-              <input type="text" name="comment_text" id="comment_text" placeholder="댓글달아주세요">
-              <button type="submit">댓글달기</button>
-          </form>
-
-          {% for comment in post.comments.all %}
-          <span class="comment_user">{{comment.comment_user}}</span>
-          <small class="text-muted">{{comment.comment_date}}</small>
-          <br>
-          <a class="card-text">{{comment.comment_text}}
-
-          <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST">
-              {% csrf_token %}
-              <input type="hidden" name="app_url" id="app_url" value="{{app_url}}"/>
-              <button type="submit">삭제</button>
-          </form>
-
-          {% endfor %}
+  <div class="card-deck mb-3">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="btn-group">
+            <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}">{{ post.create_user }}</a>
+          </div>
+          <div class="btn-group">
+            <a href="{% url 'update' post.id %}">수정</a>
+            <a href="{% url 'delete' post.id %}">삭제</a>
+          </div>
         </div>
       </div>
-      <br>
+      {% if post.create_img %}
+      <div class="text-center">
+        <img src="{{post.create_img.url}}" class="rounded" alt="..." width="585.5dp" height="585.5dp">
+      </div>
+      {% else %}
+      <a>no</a>
+      {% endif %}
+      <div class="card-body">
+        {% if post.likes.all %}
+        <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_after.png" alt="클릭시 좋아요 취소" style="width: 2rem; height:2rem;"></a>
+        {% else %}
+        <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_before.png" alt="클릭시 좋아요" style="width: 2rem; height:2rem;"></a>
+        {% endif %}
+
+        <a href="{% url 'detail' post.id %}"><img src="/static/detail.png" alt="detail 이동" style="width: 2rem; height:2rem;"></a>
+
+        <br>
+        <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }} like</span></small>
+        <small class="text-muted">/</small>
+        <small class="text-muted">{{post.comments.count}} comment</small>
+        <hr>
+        <a class="card-title pricing-card-title">{{ post|add_link|safe }}<small
+            class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
+        <hr>
+        {% for comment in post.comments.all %}
+        <a class="card-text" href="{% url 'userpage' comment.comment_user %}"><span class="comment_writer_name">{{comment.comment_user}}</span></a>
+        <small class="text-muted">{{comment.comment_date}}</small>
+        <br>
+        <a class="card-text">{{comment.comment_text}}
+          <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">
+            {% csrf_token %}
+            <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
+            <button type="submit">삭제</button>
+          </form>
+          <br>
+          {% endfor %}
+          <form action="{% url 'c_post' post.id %}" method="POST">
+            {% csrf_token %}
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="comment_text" id="comment_text" placeholder="댓글 달기 ..." style="display:inline-block">
+              <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
+              <div class="input-group-prepend">
+                <button class="input-group-text" id="inputGroup-sizing-sm" type="submit">게시</button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
 </body>
 {% endblock %}
