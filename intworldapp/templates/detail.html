@@ -5,6 +5,137 @@
 {% load humanize %}
 {% block content %}
 <body>
+  <main role="main" class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-7 blog-main">
+        <div class="container">
+          <div class="card-deck mb-3">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}">{{ post.create_user }}</a>
+                  </div>
+                  <div class="btn-group">
+                    <a href="{% url 'update' post.id %}">수정</a>
+                    <a href="{% url 'delete' post.id %}">삭제</a>
+                  </div>
+                </div>
+              </div>
+              {% if post.create_img %}
+              <div class="text-center">
+                <img src="{{post.create_img.url}}" class="rounded" alt="..." width="585.5dp" height="585.5dp">
+              </div>
+              {% else %}
+              <a>no</a>
+              {% endif %}
+
+
+              
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="col-md-3 blog-sidebar">
+        <div class="card-body">
+          {% if post.likes.all %}
+          <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_after.png" alt="클릭시 좋아요 취소" style="width: 2rem; height:2rem;"></a>
+          {% else %}
+          <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_before.png" alt="클릭시 좋아요" style="width: 2rem; height:2rem;"></a>
+          {% endif %}
+
+          <a href="{% url 'detail' post.id %}"><img src="/static/detail.png" alt="detail 이동" style="width: 2rem; height:2rem;"></a>
+
+          <br>
+          <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }} like</span></small>
+          <small class="text-muted">/</small>
+          <small class="text-muted">{{post.comments.count}} comment</small>
+          <hr>
+          <a class="card-title pricing-card-title">{{ post|add_link|safe }}<small
+              class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
+          <hr>
+          {% for comment in post.comments.all %}
+          <a class="card-text" href="{% url 'userpage' comment.comment_user %}"><span class="comment_writer_name">{{comment.comment_user}}</span></a>
+          <small class="text-muted">{{comment.comment_date}}</small>
+          <br>
+          <a class="card-text">{{comment.comment_text}}
+            <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">
+              {% csrf_token %}
+              <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
+              <button type="submit">삭제</button>
+            </form>
+            <br>
+            {% endfor %}
+            <form action="{% url 'c_post' post.id %}" method="POST">
+              {% csrf_token %}
+              <div class="input-group input-group-sm mb-3">
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="comment_text" id="comment_text" placeholder="댓글 달기 ..." style="display:inline-block">
+                <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
+                <div class="input-group-prepend">
+                  <button class="input-group-text" id="inputGroup-sizing-sm" type="submit">게시</button>
+                </div>
+              </div>
+            </form>
+        </div>
+      </aside>
+      
+    </div>
+  </main>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    $("#user_name").text()
+
+    $(".writer_name").text()
+
+    if ($("#user_name").text() == $(".writer_name").text()) {
+      $("#control_id").removeClass("hidden")
+    }
+
+
+    $('.like').click(function () {
+      var pk = $(this).attr('name')
+
+      $.ajax({
+        type: "POST",
+        url: "{% url 'like' %}",
+        data: { 'pk': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+        dataType: "json",
+
+        success: function (response) {
+          if (response.likes_count == 1) {
+            $('#count' + pk).html(response.likes_count + ' like ');
+            $('#like-img' + pk).attr('src', '/static/like_after.png');
+          } else if (response.likes_count == 0) {
+            $('#count' + pk).html('0 like');
+            $('#like-img' + pk).attr('src', '/static/like_before.png');
+          } else {
+            $('#count' + pk).html(response.likes_count + ' like');
+            $('#like-img' + pk).attr('src', '/static/like_after.png');
+          }
+          alert(response.message);
+        },
+        error: function (request, status, error) {
+          alert('로그인이 필요합니다.')
+        }
+      });
+    })
+
+  </script>
+
+</body>
+{% endblock %}
+
+
+<!--
+
+  <body>
   <div class="card-deck mb-3">
     <div class="card mb-4 shadow-sm">
       <div class="card-header">
@@ -25,47 +156,59 @@
       {% else %}
       <a>no</a>
       {% endif %}
-      <div class="card-body">
-        {% if post.likes.all %}
-        <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_after.png" alt="클릭시 좋아요 취소" style="width: 2rem; height:2rem;"></a>
-        {% else %}
-        <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_before.png" alt="클릭시 좋아요" style="width: 2rem; height:2rem;"></a>
-        {% endif %}
-
-        <a href="{% url 'detail' post.id %}"><img src="/static/detail.png" alt="detail 이동" style="width: 2rem; height:2rem;"></a>
-
-        <br>
-        <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }} like</span></small>
-        <small class="text-muted">/</small>
-        <small class="text-muted">{{post.comments.count}} comment</small>
-        <hr>
-        <a class="card-title pricing-card-title">{{ post|add_link|safe }}<small
-            class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
-        <hr>
-        {% for comment in post.comments.all %}
-        <a class="card-text" href="{% url 'userpage' comment.comment_user %}"><span class="comment_writer_name">{{comment.comment_user}}</span></a>
-        <small class="text-muted">{{comment.comment_date}}</small>
-        <br>
-        <a class="card-text">{{comment.comment_text}}
-          <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">
-            {% csrf_token %}
-            <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
-            <button type="submit">삭제</button>
-          </form>
-          <br>
-          {% endfor %}
-          <form action="{% url 'c_post' post.id %}" method="POST">
-            {% csrf_token %}
-            <div class="input-group input-group-sm mb-3">
-              <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="comment_text" id="comment_text" placeholder="댓글 달기 ..." style="display:inline-block">
-              <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
-              <div class="input-group-prepend">
-                <button class="input-group-text" id="inputGroup-sizing-sm" type="submit">게시</button>
-              </div>
-            </div>
-          </form>
-      </div>
     </div>
   </div>
+
+  <aside class="col-md-3 blog-sidebar">
+    <div class="card-body">
+      {% if post.likes.all %}
+      <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_after.png" alt="클릭시 좋아요 취소" style="width: 2rem; height:2rem;"></a>
+      {% else %}
+      <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_before.png" alt="클릭시 좋아요" style="width: 2rem; height:2rem;"></a>
+      {% endif %}
+
+      <a href="{% url 'detail' post.id %}"><img src="/static/detail.png" alt="detail 이동" style="width: 2rem; height:2rem;"></a>
+
+      <br>
+      <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }} like</span></small>
+      <small class="text-muted">/</small>
+      <small class="text-muted">{{post.comments.count}} comment</small>
+      <hr>
+      <a class="card-title pricing-card-title">{{ post|add_link|safe }}<small
+          class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
+      <hr>
+      {% for comment in post.comments.all %}
+      <a class="card-text" href="{% url 'userpage' comment.comment_user %}"><span class="comment_writer_name">{{comment.comment_user}}</span></a>
+      <small class="text-muted">{{comment.comment_date}}</small>
+      <br>
+      <a class="card-text">{{comment.comment_text}}
+        <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">
+          {% csrf_token %}
+          <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
+          <button type="submit">삭제</button>
+        </form>
+        <br>
+        {% endfor %}
+        <form action="{% url 'c_post' post.id %}" method="POST">
+          {% csrf_token %}
+          <div class="input-group input-group-sm mb-3">
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="comment_text" id="comment_text" placeholder="댓글 달기 ..." style="display:inline-block">
+            <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
+            <div class="input-group-prepend">
+              <button class="input-group-text" id="inputGroup-sizing-sm" type="submit">게시</button>
+            </div>
+          </div>
+        </form>
+    </div>
+    
+
+  </aside>
+
+
+
+
+
+
 </body>
-{% endblock %}
+
+-->
