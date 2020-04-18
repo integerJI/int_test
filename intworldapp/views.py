@@ -86,8 +86,18 @@ def c_post(request, post_id):
 @login_required
 def c_delete(request, post_id, comment_id):
     post = get_object_or_404(Post, id=post_id)
-    comment = get_object_or_404(Comment, id=comment_id)            
-    comment.delete()
+    comment = get_object_or_404(Comment, id=comment_id)   
+
+    conn_profile = User.objects.get(username = request.user.get_username())
+
+    if conn_profile == comment.comment_user:
+        comment.delete()
+        return redirect(reverse('index'), post_id)
+    else:
+        messages.info(request, '삭제할 수 없습니다.')
+        return render(request, 'index.html')
+
+    
     return redirect(reverse('index'), post_id)
 
 @login_required

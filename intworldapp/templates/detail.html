@@ -11,17 +11,7 @@
         <div class="container">
           <div class="card-deck mb-3">
             <div class="card mb-4 shadow-sm">
-              <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}">{{ post.create_user }}</a>
-                  </div>
-                  <div class="btn-group">
-                    <a href="{% url 'update' post.id %}">수정</a>
-                    <a href="{% url 'delete' post.id %}">삭제</a>
-                  </div>
-                </div>
-              </div>
+
               {% if post.create_img %}
               <div class="text-center">
                 <img src="{{post.create_img.url}}" class="rounded" alt="..." width="585.5dp" height="585.5dp">
@@ -40,6 +30,17 @@
       </div>
 
       <aside class="col-md-3 blog-sidebar">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}">{{ post.create_user }}</a>
+            </div>
+            <div class="btn-group">
+              <a href="{% url 'update' post.id %}">수정</a>
+              <a href="{% url 'delete' post.id %}">삭제</a>
+            </div>
+          </div>
+        </div>
         <div class="card-body">
           {% if post.likes.all %}
           <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_after.png" alt="클릭시 좋아요 취소" style="width: 2rem; height:2rem;"></a>
