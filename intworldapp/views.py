@@ -68,8 +68,16 @@ def update(request, post_id):
 
 def delete(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    post.delete()
-    return redirect(reverse('index'))
+
+    conn_profile = User.objects.get(username = request.user.get_username())
+
+    if conn_profile == post.create_user:
+        post.delete()
+        return redirect(reverse('index'))
+    else:
+        messages.info(request, '삭제할 수 없습니다.')
+        return render(request, 'detail.html', {'post': post})
+
 
 @login_required
 def c_post(request, post_id):

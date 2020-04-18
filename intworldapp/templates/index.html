@@ -22,11 +22,13 @@
               <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}">{{ post.create_user }}</a>
+                    <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}"><span class="writer_name">{{ post.create_user }}</span></a>
                   </div>
                   <div class="btn-group">
-                    <a href="{% url 'update' post.id %}"><img src="/static/update.png" alt="update" style="width: 1.5rem; height:1.5rem;">&nbsp;</a>
-                    <a href="{% url 'delete' post.id %}"><img src="/static/delete.png" alt="delete" style="width: 1.5rem; height:1.5rem;"></a>
+                    <span class="hidden" id="control_id">
+                      <a href="{% url 'update' post.id %}"><img src="/static/update.png" alt="update" style="width: 1.5rem; height:1.5rem;">&nbsp;</a>
+                      <a href="{% url 'delete' post.id %}"><img src="/static/delete.png" alt="delete" style="width: 1.5rem; height:1.5rem;"></a>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -138,8 +140,13 @@
     $("#user_name").text()
     $(".writer_name").text()
 
-    if ($("#user_name").text() == $(".writer_name").text()) {
-      $("#control_id").removeClass("hidden")
+    $(".writer_name") 
+    $(".writer_name")[0].innerHTML
+    
+    for (i = 0; i < $(".writer_name").length; i++) {
+      if ($("#user_name").text() == $(".writer_name")[i].innerHTML) {
+        $("#control_id").removeClass("hidden");
+      }
     }
 
 
@@ -171,13 +178,6 @@
       });
     })
     
-    for (i = 0; i < $(".comment_writer_name").length; i++) {
-      if ($("#user_name").text() == $(".comment_writer_name")[i].innerHTML) {
-        console("yrs");
-        $("#control_id1" + i).removeClass("hidden");
-      }
-    }
-
   </script>
 
 </body>
