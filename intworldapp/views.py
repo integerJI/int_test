@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import Post, Comment, Tag
 from .forms import PostForm
 from intworlduser.models import Profile
+from django.contrib import messages
 
 try:
     from django.utils import simplejson as json
@@ -95,10 +96,7 @@ def c_delete(request, post_id, comment_id):
         return redirect(reverse('index'), post_id)
     else:
         messages.info(request, '삭제할 수 없습니다.')
-        return render(request, 'index.html')
-
-    
-    return redirect(reverse('index'), post_id)
+        return redirect(reverse('index'), post_id)
 
 @login_required
 @require_POST

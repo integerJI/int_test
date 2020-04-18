@@ -45,6 +45,11 @@
           font-size: 3.5rem;
         }
       }
+      
+      .hidden {
+        display: none
+      }
+
 
     </style>
     <!-- Custom styles for this template -->
@@ -53,7 +58,7 @@
     <link href="blog.css" rel="stylesheet">
   </head>
   <body>
-
+  <a class="hidden"><span id="user_name">{{ user.username }}</span></a>
   <div class="container">
   <header class="blog-header py-3">
     <div class="container d-flex flex-column flex-md-row justify-content-between bg-white border-bottom p-2 mb-6">

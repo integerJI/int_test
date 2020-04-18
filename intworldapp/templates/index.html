@@ -4,7 +4,13 @@
 {% load post_extras %}
 {% load humanize %}
 {% block content %}
-
+<head>
+  <style>
+    .hidden {
+      display: none
+    }
+  </style>
+</head>
 <body>
   <main role="main" class="container">
     <div class="row justify-content-center">
@@ -56,11 +62,13 @@
                 <small class="text-muted">{{comment.comment_date}}</small>
                 <br>
                 <a class="card-text">{{comment.comment_text}}
+                  <span class="control hidden" id="control_id1{{ forloop.counter0 }}">
                   <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">
                     {% csrf_token %}
                     <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
                     <button type="submit">삭제</button>
                   </form>
+                  </span>
                   <br>
                   {% endfor %}
                   <form action="{% url 'c_post' post.id %}" method="POST">
@@ -88,7 +96,7 @@
             </div>
             <div class="col-md-6">
               <div class="card-body">
-                <a>{{user.username}}</a>
+                <a><span id="user_name">{{user.username}}</span></a>
                 <br>
                 <a href="{% url 'mypage' %}">My Profile</a>
                 <br>
@@ -97,6 +105,16 @@
             </div>
           </div>
         </div>
+          {% if messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {% for message in messages %}
+            <strong>{{ message.message }}</strong>
+          {% endfor %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+          {% endif %}
         <div class="p-3">
           <h4 class="font-italic">Producer</h4>
           <ol class="list-unstyled">
@@ -118,7 +136,6 @@
   <script type="text/javascript">
 
     $("#user_name").text()
-
     $(".writer_name").text()
 
     if ($("#user_name").text() == $(".writer_name").text()) {
@@ -154,11 +171,9 @@
       });
     })
     
-    $(".comment_writer_name") 
-    $(".comment_writer_name")[0].innerHTML  
-
     for (i = 0; i < $(".comment_writer_name").length; i++) {
       if ($("#user_name").text() == $(".comment_writer_name")[i].innerHTML) {
+        console("yrs");
         $("#control_id1" + i).removeClass("hidden");
       }
     }
