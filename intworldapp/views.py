@@ -59,11 +59,19 @@ def detail(request, post_id):
 
 def update(request, post_id):
     post = Post.objects.get(id = post_id)
+
+    conn_profile = User.objects.get(username = request.user.get_username())
+
     if request.method == 'POST':
-        post.main_text = request.POST['main_text']
-        post.create_user = User.objects.get(username = request.user.get_username())
-        post.save()
-        return redirect(reverse('index'))
+        if conn_profile == post.create_user:
+            post.main_text = request.POST['main_text']
+            post.create_user = User.objects.get(username = request.user.get_username())
+            post.save()
+            return redirect(reverse('index'))
+        else:
+            messages.info(request, '수정할 수 없습니다.')
+            return render(request, 'detail.html', {'post': post})
+
     return render(request, 'update.html')
 
 def delete(request, post_id):
