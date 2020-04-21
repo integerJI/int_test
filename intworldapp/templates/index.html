@@ -47,22 +47,17 @@
                 {% endif %}
 
                 <a href="{% url 'detail' post.id %}"><img src="/static/detail.png" alt="detail 이동" style="width: 2rem; height:2rem;"></a>
-
+                <div class="group">
                 <br>
                 <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }} like</span></small>
                 <small class="text-muted">/</small>
                 <small class="text-muted">{{post.comments.count}} comment</small>
                 <br>
                 <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}">{{ post.create_user }}</a>
-                <small class="text-muted">:</small>
                 <a class="card-title pricing-card-title">{{ post|add_link|safe }}</a>
                 <br>
-                <small class="text-muted">{{ post.create_date | naturaltime }}</small>
-                <hr>
                 {% for comment in post.comments.all %}
                 <a class="card-text" href="{% url 'userpage' comment.comment_user %}"><span class="comment_writer_name">{{comment.comment_user}}</span></a>
-                <small class="text-muted">{{comment.comment_date}}</small>
-                <br>
                 <a class="card-text">{{comment.comment_text}}
                   <span class="control hidden" id="control_id1{{ forloop.counter0 }}">
                   <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">
@@ -73,6 +68,11 @@
                   </span>
                   <br>
                   {% endfor %}
+                  <small class="text-muted">{{ post.create_date | naturaltime }}</small>
+                </div>
+                <br>
+                <div class="group">
+
                   <form action="{% url 'c_post' post.id %}" method="POST">
                     {% csrf_token %}
                     <div class="input-group input-group-sm mb-3">
@@ -83,6 +83,7 @@
                       </div>
                     </div>
                   </form>
+                  </div>
               </div>
             </div>
           </div>
