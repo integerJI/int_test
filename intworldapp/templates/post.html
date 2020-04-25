@@ -3,6 +3,14 @@
 {% block content %}
 <body>
     <div class="d-flex justify-content-center">
+
+
+    <form id="form1" runat="server">
+        <input type='file' onchange="readURL(this);" />
+        <img id="blah" src="#" alt="your image" />
+    </form>
+
+    <!--
     <form method="POST" action="{% url 'post' %}" enctype="multipart/form-data">
         {%csrf_token%}
         <div class="form-group">
@@ -17,6 +25,23 @@
         <br>
         <input class="btn btn-dark" type="submit" value="post">
     </form> 
+    -->
+
+
+
     </div>
 </body>
+
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
 {% endblock %}
