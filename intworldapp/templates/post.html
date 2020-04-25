@@ -4,14 +4,7 @@
 <body>
     <div class="d-flex justify-content-center">
 
-
-    <form id="form1" runat="server">
-        <input type='file' onchange="readURL(this);" />
-        <img id="blah" src="#" alt="your image" />
-    </form>
-
-    <!--
-    <form method="POST" action="{% url 'post' %}" enctype="multipart/form-data">
+    <form method="POST" action="{% url 'post' %}" enctype="multipart/form-data" id="form1" runat="server">
         {%csrf_token%}
         <div class="form-group">
             <textarea class="form-control" rows="3" name="main_text" cols="40" rows="10" maxlength="150" required id="id_text"></textarea>
@@ -19,15 +12,13 @@
         <br>
         <br>
         <div class="form-group">
-            <input type="file" class="form-control-file" id="id_images" name="create_img" accept="image/*" >
+            <input type="file" class="form-control-file" id="id_images" name="create_img" accept="image/*" onchange="readURL(this);" >
+            <img id="blah" src="#" alt="your image" width="585.5dp" height="585.5dp" />
         </div>
         <br>
         <br>
         <input class="btn btn-dark" type="submit" value="post">
     </form> 
-    -->
-
-
 
     </div>
 </body>
