@@ -20,17 +20,20 @@
           <div class="card-deck mb-3">
             <div class="card mb-4 shadow-sm">
               <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
+
+                  <!-- 접속자와 글쓴이가 같으면 -->
+                  <div class="btn-group" style="float: left;">
                     <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}"><span class="writer_name">{{ post.create_user }}</span></a>
                   </div>
-                  <div class="btn-group">
+
+                  <!-- 점속자와 글쓴이가 같지 않으면 사라짐 -->
+                  <div class="btn-group" style="float: right;">
                     <span class="hidden" id="control_id">
                       <a href="{% url 'update' post.id %}"><img src="/static/update.png" alt="update" style="width: 1.5rem; height:1.5rem;">&nbsp;</a>
                       <a href="{% url 'delete' post.id %}"><img src="/static/delete.png" alt="delete" style="width: 1.5rem; height:1.5rem;"></a>
                     </span>
                   </div>
-                </div>
+
               </div>
               {% if post.create_img %}
               <div class="text-center">
@@ -62,7 +65,7 @@
                   <span class="control hidden" id="control_id1{{ forloop.counter0 }}">
                   <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">
                     {% csrf_token %}
-                    <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
+                    <input type="`" name="app_url" id="app_url" value="{{app_url}}" />
                     <button type="submit">삭제</button>
                   </form>
                   </span>
@@ -94,6 +97,7 @@
       <aside class="col-md-3 blog-sidebar">
         <div class="card mb-3 bg-light rounded" style="max-width: 540px;" bg-light rounded>
           <div class="row no-gutters">
+            <a></a>
             <div class="col-md-5 d-flex align-items-center d-flex justify-content-center">
               <img src="{{ profile_pic }}" alt="..." class="rounded-circle" width="60" height="60">
             </div>
