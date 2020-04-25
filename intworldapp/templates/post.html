@@ -12,7 +12,7 @@
               <div class="col-md-7 blog-main">
                 <div class="container">
                     <div class="form-group">
-                        <img id="blah" src="#" alt="your image" width="585.5dp" height="585.5dp" />
+                        <img id="blah" src="/static/default.png" alt="your image" width="585.5dp" height="585.5dp" />
                     </div>    
         
         
@@ -22,11 +22,14 @@
               <aside class="col-md-3 blog-sidebar">
                     <div class="form-group">
                         <input type="file" class="form-control-file" id="id_images" name="create_img" accept="image/*" onchange="readURL(this);" >
+                        <br>
 
                         <textarea class="form-control" rows="3" name="main_text" cols="40" rows="10" maxlength="150" required id="id_text"></textarea>
-                    </div>    
-                <input class="btn btn-dark" type="submit" value="post">
-        
+                    </div>  
+                    <!-- 글쓰기 버튼 왼쪽정렬 -->
+                    <div style="float: right;">
+                    <input class="btn btn-dark" type="submit" value="post">
+                    </div>  
               </aside>
               
             </div>

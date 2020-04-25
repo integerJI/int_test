@@ -75,10 +75,7 @@ def update(request, post_id):
                         
                 messages.info(request, '수정 완료')
                 return render(request, 'detail.html', context=context)
-
-
-
-
+                
         else:
             messages.info(request, '수정할 수 없습니다.')
             return render(request, 'detail.html', {'post': post})
