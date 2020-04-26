@@ -4,9 +4,7 @@
 <body>
     <form method="POST">
         {%csrf_token%}
-        <textarea cols=40 rows=10 name="main_text"></textarea>
-        <br>
-        <br>
+        {{ form.as_p }}
         <input class="btn btn-dark" type="submit" value="post">
     </form> 
 </body>
