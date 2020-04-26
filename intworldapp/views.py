@@ -59,10 +59,11 @@ def detail(request, post_id):
 
 def update(request, post_id):
     post = Post.objects.get(id = post_id)
-    form = PostForm(request.POST, request.FILES, instance=post)
     conn_profile = User.objects.get(username = request.user.get_username())
         
     if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+
         if form.is_valid():
             if conn_profile == post.create_user:
                 post = form.save(commit=False)
@@ -79,7 +80,12 @@ def update(request, post_id):
                 messages.info(request, '수정할 수 없습니다.')
                 return render(request, 'detail.html', {'post': post})
     else:
-        return render(request, 'update.html', {'post': post, 'form': form})
+        if conn_profile == post.create_user:
+            form = PostForm(instance = post)
+            return render(request, 'update.html', {'post': post, 'form': form})
+        else:
+            messages.info(request, '수정할 수 없습니다.')
+            return redirect(reverse('index'), post_id)
 
 def delete(request, post_id):
     post = get_object_or_404(Post, id=post_id)
