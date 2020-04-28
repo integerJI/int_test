@@ -57,7 +57,7 @@
                 <small class="text-muted">{{post.comments.count}} comment</small>
                 <br>
                 <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}">{{ post.create_user }}</a>
-                <a class="card-title pricing-card-title">{{ post|add_link|safe }}</a>
+                <a class="card-title pricing-card-title">{{ post|add_link|safe|linebreaksbr }}</a>
                 <br>
                 {% for comment in post.comments.all %}
                 <a class="card-text" href="{% url 'userpage' comment.comment_user %}"><span class="comment_writer_name">{{comment.comment_user}}</span></a>
