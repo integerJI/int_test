@@ -2,39 +2,25 @@
 {% load staticfiles %}
 {% block content %}
 
-<div class="row mb-2 justify-content-center">
-  <div class="col-md-6">
-
-    <div class="row no-gutters rounded overflow-hidden flex-md-row mb-4 h-md-250 position-relative">
-    
-      <div class="col-md-5 d-flex align-items-center d-flex justify-content-center">
-        <div class="col-auto d-none d-lg-block">
-          <img class="img-fluid rounded-circle" width="250" height="250" src="{% if profile_pic %} {{profile_pic}} {% else %} /static/default.jpg {% endif %}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-        </div>
-      </div>
-      
-      <div class="col p-4 d-flex flex-column position-static">
-        <h3 class="mb-0">{{ id }}</h3> 
-        <div class="mb-1 text-muted">Nov 12</div>
-        
-        {% if intro %}
-        <p class="card-text mb-auto">{{ intro | linebreaksbr}}</p>
-        {% else %}
-        {% endif %}
-
-
-        <a href="{% url 'profile_update' %}" class="stretched-link">Profile Update</a>
-
-        
-      </div>
-
-    </div>
+<div class="cantrion">
+<div class="row justify-content-center">
+  <div class="col-md-3 order-md-1">
+  <img class="img-fluid rounded-circle" width="250" height="250"
+    src="{% if profile_pic %} {{profile_pic}} {% else %} /static/default.jpg {% endif %}"
+    preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
   </div>
+  <div class="col-md-4 order-md-2 mb-4">
+  <h3 class="mb-0">{{ id }}</h3>
+  {% if intro %}
+  <p class="card-text mb-auto">{{ intro | linebreaksbr}}</p>
+  {% else %}
+  {% endif %}
+
+  <a href="{% url 'profile_update' %}">Profile Update</a>
 </div>
-
-
-
-<!-- <div class="container">
+</div>
+</div>
+  <!-- <div class="container">
   <div class="d-flex justify-content-center">
     <div class="card" style="width: 35rem;">
       <div class="card-body">
@@ -56,4 +42,4 @@
   </div>
 </div> -->
 
-{% endblock %}
+  {% endblock %}
