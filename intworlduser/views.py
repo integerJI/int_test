@@ -12,6 +12,7 @@ from django.views import generic, View
 from django.contrib.auth.decorators import login_required
 from .forms import UserCreationMultiForm, ProfileForm, ProfileUpdateForm
 from .models import Profile
+from intworldapp.models import Post
 
 def signup(request):
     if request.method == 'POST':
@@ -52,6 +53,7 @@ signout = LogoutViews.as_view()
 @login_required
 def userinfo(request):
     conn_user = request.user
+    posts = Post.objects.all().filter(create_user=conn_user).order_by('-id')
     conn_profile = Profile.objects.get(user=conn_user)
 
     if not conn_profile.profile_image:
@@ -64,6 +66,7 @@ def userinfo(request):
         'nick' : conn_profile.nick,
         'profile_pic' : pic_url,
         'intro' : conn_profile.intro,
+        'posts' : posts,
     }
 
     return render(request, 'mypage.html', context=context)
@@ -91,8 +94,6 @@ def user_select_info(request, writer):
 class ProfileUpdateView(View): 
     def get(self, request):
         user = get_object_or_404(User, pk=request.user.pk) 
-
-
         if hasattr(user, 'profile'):  
             profile = user.profile
             profile_form = ProfileUpdateForm(initial={
