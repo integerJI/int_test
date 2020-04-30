@@ -75,6 +75,7 @@ def userinfo(request):
 def user_select_info(request, writer):
     select_profile = Profile.objects.get(nick=writer)
     select_user = select_profile.user
+    posts = Post.objects.all().filter(create_user=select_user).order_by('-id')
 
     if not select_profile.profile_image:
         pic_url = ""
@@ -85,7 +86,8 @@ def user_select_info(request, writer):
         'id' : select_user.username,
         'nick' : select_profile.nick,
         'profile_pic' : pic_url,
-        'intro' : select_profile.intro
+        'intro' : select_profile.intro,
+        'posts' : posts,
     }
 
     return render(request, 'userpage.html', context=context)
