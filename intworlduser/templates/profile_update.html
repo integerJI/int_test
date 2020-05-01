@@ -8,12 +8,11 @@
                 <form method="POST" class="post-form" enctype="multipart/form-data" action="">
                     {%csrf_token%}  
                     <br>
-                    <div class="d-flex justify-content-center">
-                    <br>
-                    <h2>{{user.username}}님의 프로필 수정</h2>
-                    </div>
       
-                    {{ profile_form.as_p }}
+                    {{ profile_form.intro }}
+
+                    {{profile_form.profile_image}}
+                    <br>
                     
                     <input type="submit" class="save btn btn-success" value="변경">
                     <a href="{% url 'index' %}">
