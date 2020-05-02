@@ -17,6 +17,7 @@
                 </div>
                 <aside class="col-md-3 blog-sidebar">
                     <div class="form-group">
+                        <br>
                         {{form.main_text}}
                     </div>
                     <div style="float: right;">
@@ -27,16 +28,4 @@
         </main>
     </form>
 </body>
-<script type="text/javascript">
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#blah').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-</script>
 {% endblock %}
