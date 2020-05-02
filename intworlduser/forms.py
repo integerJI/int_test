@@ -30,6 +30,11 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['profile_image', 'intro',]
 
+        widgets = {
+            'intro': forms.TextInput(attrs={'class': 'form-control'}),
+            'profile_image' : forms.ClearableFileInput(attrs={'class': 'form-control-file', 'onchange': 'readURL(this);'}),
+        }
+
         labels = {
             'profile_image': '프로필 사진',
             'intro': '인사말',
@@ -55,7 +60,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
         widgets = {
             'intro': forms.TextInput(attrs={'class': 'form-control'}),
-            'profile_image' : forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'profile_image' : forms.ClearableFileInput(attrs={'class': 'form-control-file', 'onchange': 'readURL(this);'}),
         }
 
         labels = {
