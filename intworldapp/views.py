@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .models import Post, Comment, Tag
+from .models import Post, Comment, Tag, Tag_2
 from .forms import PostForm
 from intworlduser.models import Profile
 from django.contrib import messages
@@ -148,7 +148,7 @@ def like(request):
     context = {'likes_count' : post.total_likes, 'message' : message}
     return HttpResponse(json.dumps(context), content_type='application/json')
 
-def search(request, tag=None):
+def search(request, tag=None, tag_2=None):
     posts = Post.objects.all().order_by('-id')
     conn_user = request.user
     conn_profile = Profile.objects.get(user=conn_user)
@@ -158,15 +158,19 @@ def search(request, tag=None):
     else:
         pic_url = conn_profile.profile_image.url
 
-    q = request.POST.get('q', "") 
+    q = request.POST.get('q', False) 
 
     if tag:
         posts = Post.objects.filter(tag_set__tag_name__iexact=tag).prefetch_related('tag_set').select_related('create_user')
-        return render(request, 'search.html', {'posts' : posts, 'pic_url' : pic_url, 'q' : q, 'tag': tag})
+        if tag_2:
+            posts = Post.objects.filter(tag_set_2__tag_name_2__iexact=tag_2).prefetch_related('tag_set_2').select_related('create_user')
 
-    if q:
+    elif q:
         posts = posts.filter(main_text__icontains=q)
-        return render(request, 'search.html', {'posts' : posts, 'pic_url' : pic_url, 'q' : q})
     
     else:
-        return render(request, 'search.html')
+        messages.info(request, '입력된 값이 없습니다.')
+        return redirect('index')
+
+    return render(request, 'search.html', {'posts' : posts, 'pic_url' : pic_url, 'q' : q, 'tag': tag})
+    
