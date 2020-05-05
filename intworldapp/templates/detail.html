@@ -4,29 +4,31 @@
 {% load post_extras %}
 {% load humanize %}
 {% block content %}
+
 <head>
   {% if messages %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-  {% for message in messages %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {% for message in messages %}
     <strong>{{ message.message }}</strong>
-  {% endfor %}
+    {% endfor %}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
-    </div>
+  </div>
   {% endif %}
 </head>
+
 <body>
   <main role="main" class="container">
     <div class="row justify-content-center">
-      
-      <div class="col-md-6 blog-main">
+
+      <div class="col-md-7 blog-main">
         <div class="container">
           <div class="card-deck mb-3">
             <div class="card mb-4 shadow-sm">
               {% if post.create_img %}
               <div class="text-center">
-                <img src="{{post.create_img.url}}" class="rounded" alt="..." width="493dp" height="493dp">
+                <img src="{{post.create_img.url}}" class="rounded" alt="..." width="585.5dp" height="585.5dp">
               </div>
               {% else %}
               <a>no</a>
@@ -36,31 +38,38 @@
         </div>
       </div>
 
-      <aside class="col-md-4 blog-sidebar">
+      <aside class="col-md-3 blog-sidebar">
         <div class="card-header">
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-              <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}"><span class="writer_name">{{ post.create_user }}</span></a>
+              <a class="my-0 font-weight-normal" href="{% url 'userpage' post.create_user %}"><span
+                  class="writer_name">{{ post.create_user }}</span></a>
             </div>
             <div class="btn-group">
               <span class="hidden" id="control_id">
-                <a href="{% url 'update' post.id %}"><img src="/static/update.png" alt="update" style="width: 1.5rem; height:1.5rem;">&nbsp;</a>
-                <a href="{% url 'delete' post.id %}"><img src="/static/delete.png" alt="delete" style="width: 1.5rem; height:1.5rem;"></a>
+                <a href="{% url 'update' post.id %}"><img src="/static/update.png" alt="update"
+                    style="width: 1.5rem; height:1.5rem;">&nbsp;</a>
+                <a href="{% url 'delete' post.id %}"><img src="/static/delete.png" alt="delete"
+                    style="width: 1.5rem; height:1.5rem;"></a>
               </span>
             </div>
           </div>
         </div>
         <div class="card-body">
           {% if post.likes.all %}
-          <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_after.png" alt="클릭시 좋아요 취소" style="width: 2rem; height:2rem;"></a>
+          <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_after.png"
+              alt="클릭시 좋아요 취소" style="width: 2rem; height:2rem;"></a>
           {% else %}
-          <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_before.png" alt="클릭시 좋아요" style="width: 2rem; height:2rem;"></a>
+          <a class="like" name="{{ post.pk }}"><img id="like-img{{ post.pk }}" src="/static/like_before.png"
+              alt="클릭시 좋아요" style="width: 2rem; height:2rem;"></a>
           {% endif %}
 
-          <a href="{% url 'detail' post.id %}"><img src="/static/detail.png" alt="detail 이동" style="width: 2rem; height:2rem;"></a>
+          <a href="{% url 'detail' post.id %}"><img src="/static/detail.png" alt="detail 이동"
+              style="width: 2rem; height:2rem;"></a>
 
           <br>
-          <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }} like</span></small>
+          <small class="text-muted"><span class="like_count" id="count{{ post.pk }}">{{ post.total_likes }}
+              like</span></small>
           <small class="text-muted">/</small>
           <small class="text-muted">{{post.comments.count}} comment</small>
           <hr>
@@ -68,23 +77,26 @@
               class="text-muted">&nbsp;&nbsp;{{ post.create_date | naturaltime }}</small></a>
           <hr>
           {% for comment in post.comments.all %}
-          <a class="card-text" href="{% url 'userpage' comment.comment_user %}"><span class="comment_writer_name">{{comment.comment_user}}</span></a>
+          <a class="card-text" href="{% url 'userpage' comment.comment_user %}"><span
+              class="comment_writer_name">{{comment.comment_user}}</span></a>
           <small class="text-muted">{{comment.comment_date}}</small>
           <br>
           <a class="card-text">{{comment.comment_text}}
             <span class="control hidden" id="control_id1{{ forloop.counter0 }}">
-            <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">
-              {% csrf_token %}
-              <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
-              <button type="submit">삭제</button>
-            </form>
+              <form action="{% url 'c_delete' post.pk comment.pk %}" method="POST" style="display:inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
+                <button type="submit">삭제</button>
+              </form>
             </span>
             <br>
             {% endfor %}
             <form action="{% url 'c_post' post.id %}" method="POST">
               {% csrf_token %}
               <div class="input-group input-group-sm mb-3">
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="comment_text" id="comment_text" placeholder="댓글 달기 ..." style="display:inline-block">
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-sm" name="comment_text" id="comment_text" placeholder="댓글 달기 ..."
+                  style="display:inline-block">
                 <input type="hidden" name="app_url" id="app_url" value="{{app_url}}" />
                 <div class="input-group-prepend">
                   <button class="input-group-text" id="inputGroup-sizing-sm" type="submit">게시</button>
@@ -93,7 +105,7 @@
             </form>
         </div>
       </aside>
-      
+
     </div>
   </main>
 
@@ -135,10 +147,10 @@
         }
       });
     })
-    
-    $(".comment_writer_name") 
-    $(".comment_writer_name")[0].innerHTML      
-    
+
+    $(".comment_writer_name")
+    $(".comment_writer_name")[0].innerHTML
+
     for (i = 0; i < $(".comment_writer_name").length; i++) {
       if ($("#user_name").text() == $(".comment_writer_name")[i].innerHTML) {
         $("#control_id1" + i).removeClass("hidden");
