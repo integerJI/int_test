@@ -162,8 +162,9 @@ def search(request, tag=None, tag_2=None):
 
     if tag:
         posts = Post.objects.filter(tag_set__tag_name__iexact=tag).prefetch_related('tag_set').select_related('create_user').order_by('-id')
-        if tag_2:
-            posts = Post.objects.filter(tag_set_2__tag_name_2__iexact=tag_2).prefetch_related('tag_set_2').select_related('create_user').order_by('-id')
+        
+    elif tag_2:
+        posts = Post.objects.filter(tag_set_2__tag_name_2__iexact=tag_2).prefetch_related('tag_set_2').select_related('create_user').order_by('-id')
 
     elif q:
         posts = posts.filter(main_text__icontains=q).order_by('-id')
